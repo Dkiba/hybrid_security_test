@@ -1,0 +1,106 @@
+# Server Configuration
+server:
+  port: ${SECURITY_PORT:8080}
+
+# Spring Application Configuration
+spring:
+  application:
+    name: ${APPLICATION_NAME:auth-service}
+  web:
+    resources:
+      static-locations: classpath:/static/
+  spring:
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            issuer-uri: http://localhost:9000 # JWT issuer URI
+          opaque-token:
+            introspection-uri: http://localhost:9000/oauth2/introspect # Opaque token introspection endpoint
+            client-id: client
+            client-secret: secret
+
+  # Database Configuration (PostgreSQL)
+  datasource:
+    url: ${AUTH_DB_URL:jdbc:postgresql://localhost:5433/tari_uaa_db}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:Admin123}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10 # Connection pool size
+      minimum-idle: 2
+      idle-timeout: 30000
+      max-lifetime: 1800000
+
+  # JPA Configuration
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update # Automatically update the schema
+    show-sql: true # Show SQL queries in logs (for debugging)
+    properties:
+      hibernate:
+        format_sql: true # Format SQL queries for better readability
+
+  # Security Configuration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://your-auth-server/.well-known/jwks.json # Replace with your OAuth2 provider's JWKS URI
+        opaque-token:
+          introspection-uri: https://your-auth-server/oauth/introspect # Replace with your OAuth2 introspection endpoint
+          client-id: 123 # Replace with your OAuth2 client ID
+          client-secret: 12345678 # Replace with your OAuth2 client secret
+
+  # Mail Configuration (for password resets)
+  mail:
+    host: smtp.gmail.com # Replace with your SMTP server
+    port: 587
+    username: your-email@gmail.com # Replace with your email
+    password: your-email-password # Replace with your email password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+# JWT Configuration
+jwt:
+  secret: your-jwt-secret-key # Replace with a strong secret key
+  expiration: 300 # Token expiration time in seconds (5 minutes)
+
+# Login Attempts Configuration
+login:
+  attempts:
+    max-attempts: 5 # Maximum allowed failed login attempts
+    lock-time-duration: 86400000 # Lock time duration in milliseconds (24 hours)
+
+# Swagger UI Configuration
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html # Path for Swagger UI
+    operations-sorter: alpha
+    tags-sorter: alpha
+    doc-expansion: none
+  api-docs:
+    path: /v3/api-docs # Path for OpenAPI JSON
+
+pkce:
+  code_challenge: 47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU
+  code_verifier: JNkbRXf1oRWGrzdbO7IsDDAgs2QoQzSZ593IZqmkaQc
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    org.springframework.security: DEBUG # Enable debug logs for Spring Security
+    org.springframework.web: DEBUG
+    org.springframework.security.oauth2: TRACE
+
+# CORS Configuration (for Angular integration)
+cors:
+  allowed-origins: http://localhost:4200 # Replace with your Angular app URL
+  allowed-methods: GET, POST, PUT, DELETE
+  allowed-headers: Authorization, Content-Type
