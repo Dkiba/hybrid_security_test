@@ -14,9 +14,10 @@ spring:
       oauth2:
         resourceserver:
           jwt:
-            issuer-uri: http://localhost:9000 # JWT issuer URI
+            issuer-uri: http://localhost:8080 # JWT issuer URI
+            jwk-set-uri: http://localhost:8080/oauth2/jwks
           opaque-token:
-            introspection-uri: http://localhost:9000/oauth2/introspect # Opaque token introspection endpoint
+            introspection-uri: http://localhost:8080/oauth2/introspect # Opaque token introspection endpoint
             client-id: client
             client-secret: secret
 
@@ -42,16 +43,6 @@ spring:
       hibernate:
         format_sql: true # Format SQL queries for better readability
 
-  # Security Configuration
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://your-auth-server/.well-known/jwks.json # Replace with your OAuth2 provider's JWKS URI
-        opaque-token:
-          introspection-uri: https://your-auth-server/oauth/introspect # Replace with your OAuth2 introspection endpoint
-          client-id: 123 # Replace with your OAuth2 client ID
-          client-secret: 12345678 # Replace with your OAuth2 client secret
 
   # Mail Configuration (for password resets)
   mail:
@@ -98,6 +89,7 @@ logging:
     org.springframework.security: DEBUG # Enable debug logs for Spring Security
     org.springframework.web: DEBUG
     org.springframework.security.oauth2: TRACE
+    com.nimbuds: DEBUG
 
 # CORS Configuration (for Angular integration)
 cors:

@@ -23,7 +23,7 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
     @Override
     public OAuth2AuthenticatedPrincipal introspect(String token) {
         // Call the authorization server to validate the opaque token
-        String introspectionUrl = "http://localhost:9000/oauth2/introspect"; // Introspection endpoint
+        String introspectionUrl = "http://localhost:8080/oauth2/introspect"; // Introspection endpoint
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth("123", "12345678"); // Replace with your client credentials

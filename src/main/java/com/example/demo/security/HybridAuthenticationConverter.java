@@ -22,12 +22,15 @@ public class HybridAuthenticationConverter implements AuthenticationConverter {
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7);
+            System.out.println("TOKEN DADEQ&&&&&&&&&&&&&&&&&&&&: "+token);
             if (isJwt(token)) {
                 try {
+                    System.out.println("jwt before =======================>: ");
                     Jwt jwt = jwtDecoder.decode(token);
+                    System.out.println("jwt after =======================>: "+jwt.toString());
                     return new JwtAuthenticationToken(jwt);
                 } catch (JwtException e) {
-                    throw new RuntimeException("Invalid JWT", e);
+                    throw new RuntimeException("Invalid JWT: "+e);
                 }
             } else {
                 return new BearerTokenAuthenticationToken(token);
